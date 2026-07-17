@@ -101,17 +101,20 @@
 ### 자율 에이전트 프레임워크 선정 및 구축
 - **변경 유형**: 생성
 - **변경 내용**: orchestrator에 CrewAI + Ollama 기반 자율 에이전트 실행 환경 구축
-  - 프레임워크 비교 검토: CrewAI vs LangGraph vs smolagents vs AutoGen vs Swarm
+  - 프레임워크 5종 비교: CrewAI vs LangGraph vs smolagents vs AutoGen vs Swarm
   - **CrewAI v1.15.3** 채택 (MIT, self-hosted 무료, role 기반 구조 1:1 매핑)
-  - **Ollama + Qwen3 14B** 기본 모델 (M4 Pro 48GB, 무료)
+  - 모델 6종 비교: Gemma 4, Qwen3, Qwen3.5, Llama 3.3, DeepSeek R1, Phi-4
+  - 검토 기준: 라이선스(Apache 2.0), 하드웨어(M4 Pro 48GB, 273 GB/s), tool-call 신뢰도, 응답 속도, RAM
+  - **Gemma 4 12B** 기본 모델 채택 (tool-call ~90%, ~80-90 tok/s, ~6.6GB, Apache 2.0)
+  - 고성능: Gemma 4 26B MoE / 빠른 반복: Qwen3 8B / 코딩: Qwen3.5 35B-A3B
+  - 모든 모델 Apache 2.0 (상업적 사용 무제한, 로열티 없음)
+  - 참고: HuggingFace Open LLM Leaderboard, HuggingFace 2026 LLM 비교, Apple Silicon 벤치마크
+  - `orchestrator/src/config/llm.py` — 모델 비교표 및 선정 근거 포함
   - `orchestrator/src/config/agents.yaml` — 10개 에이전트 CrewAI 형식 정의
   - `orchestrator/src/config/tasks.yaml` — Step별 태스크 정의
-  - `orchestrator/src/config/llm.py` — Ollama LLM 설정
-  - `orchestrator/src/crews/research_crew.py` — Step 1 시장 조사 Crew
-  - `orchestrator/src/crews/planning_crew.py` — Step 2-4 기획 Crew
+  - `orchestrator/src/crews/` — ResearchCrew (Step 1), PlanningCrew (Step 2-4)
   - `orchestrator/main.py` — 실행 엔트리포인트
-  - `orchestrator/pyproject.toml` — Python 프로젝트 설정
-  - `orchestrator/CLAUDE.md` — AI 모델/프레임워크 정보 추가
+  - `orchestrator/CLAUDE.md` — 모델 선정 근거 상세 기록
 - **변경 사유**: orchestrator에 AI 모델이 정의되지 않아 자율 에이전트 실행 불가능했음
 - **관련 에이전트**: 서기관리 에이전트
 - **영향 범위**: orchestrator 레포, Notion 사업계획서/메인 페이지
