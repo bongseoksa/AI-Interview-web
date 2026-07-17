@@ -23,8 +23,9 @@ export async function generateMetadata({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
   try {
-    const node = await getNodeBySlug(slug);
+    const node = await getNodeBySlug(decodedSlug);
     return {
       title: `${node.title} | AI Interview`,
       description: node.content_body?.slice(0, 160) || node.title,
@@ -40,12 +41,14 @@ export default async function ConceptPage({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category, slug } = await params;
-  const meta = CATEGORY_MAP[category as CategoryType];
+  const decodedCategory = decodeURIComponent(category);
+  const decodedSlug = decodeURIComponent(slug);
+  const meta = CATEGORY_MAP[decodedCategory as CategoryType];
   if (!meta) notFound();
 
   let node;
   try {
-    node = await getNodeBySlug(slug);
+    node = await getNodeBySlug(decodedSlug);
   } catch {
     notFound();
   }
@@ -60,7 +63,7 @@ export default async function ConceptPage({
       {/* 네비게이션 */}
       <div className="mb-6 space-y-1">
         <Link
-          href={`/learn/${category}`}
+          href={`/learn/${decodedCategory}`}
           className="text-sm text-muted-foreground hover:underline"
         >
           ← {meta.label}
@@ -137,7 +140,7 @@ export default async function ConceptPage({
       {/* 하단 네비게이션 */}
       <div className="flex justify-between text-sm">
         <Link
-          href={`/learn/${category}`}
+          href={`/learn/${decodedCategory}`}
           className="text-muted-foreground hover:underline"
         >
           ← {meta.label} 목록

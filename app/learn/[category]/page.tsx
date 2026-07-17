@@ -17,7 +17,8 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-  const meta = CATEGORY_MAP[category as CategoryType];
+  const decodedCategory = decodeURIComponent(category);
+  const meta = CATEGORY_MAP[decodedCategory as CategoryType];
   if (!meta) return { title: "Not Found" };
   return {
     title: `${meta.label} | AI Interview`,
@@ -31,11 +32,12 @@ export default async function CategoryPage({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-  const meta = CATEGORY_MAP[category as CategoryType];
+  const decodedCategory = decodeURIComponent(category);
+  const meta = CATEGORY_MAP[decodedCategory as CategoryType];
   if (!meta) notFound();
 
   const [nodes, progressList] = await Promise.all([
-    getNodesByCategory(category as CategoryType),
+    getNodesByCategory(decodedCategory as CategoryType),
     getUserProgress(),
   ]);
   const progressMap = new Map(
@@ -66,7 +68,7 @@ export default async function CategoryPage({
           const mastery = progressMap.get(node.id);
           const isCompleted = mastery !== undefined && mastery >= 80;
           return (
-            <Link key={node.id} href={`/learn/${category}/${node.slug}`}>
+            <Link key={node.id} href={`/learn/${decodedCategory}/${node.slug}`}>
               <Card className={`transition-colors hover:border-primary ${isCompleted ? "border-green-300 bg-green-50/50 dark:border-green-800 dark:bg-green-950/20" : ""}`}>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
