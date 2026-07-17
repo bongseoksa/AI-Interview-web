@@ -116,6 +116,24 @@
 - **관련 에이전트**: 서기관리 에이전트
 - **영향 범위**: 3개 레포 전체, 서기 에이전트 스펙, 문서 관리 체계
 
+### 외부인사 에이전트 (External Advisor) 신규 추가
+- **변경 유형**: 생성
+- **변경 내용**: 제3자 관점의 객관적/비판적 리뷰 담당 에이전트 추가 (10개 → 11개 에이전트)
+  - `orchestrator/agents/external-advisor.yaml` — 에이전트 YAML 원본 생성
+  - `orchestrator/.claude/agents/external-advisor.md` — Claude Code 서브에이전트 배포
+  - `orchestrator/src/config/agents.yaml` — CrewAI 에이전트 정의에 external_advisor 추가
+  - Notion 메인 페이지: 에이전트 수 10 → 11, 에이전트 목록에 외부인사 추가
+  - Notion 사업계획서: 1.11 외부인사 섹션 추가, 협업 매트릭스 2.3 추가, 의사결정 기록 추가
+  - Notion 진행가이드: 에이전트 수 10 → 11
+- **변경 사유**: 내부 에이전트들의 확증 편향 방지를 위한 Devil's Advocate 역할 필요
+- **에이전트 특성**:
+  - 15년차 스타트업 자문위원 겸 엔젤 투자자 페르소나
+  - 우호적이지 않은 비판적 시각 유지
+  - 의사결정 과정에 참여하지 않음 (자문만, 결정권 없음)
+  - 사용자/시장/기술 세 축으로 피드백 구조화
+- **관련 에이전트**: 서기관리 에이전트
+- **영향 범위**: Notion 3개 문서, orchestrator 레포, web CHANGELOG
+
 ### 자율 에이전트 프레임워크 선정 및 구축
 - **변경 유형**: 생성
 - **변경 내용**: orchestrator에 CrewAI + Ollama 기반 자율 에이전트 실행 환경 구축
