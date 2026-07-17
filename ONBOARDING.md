@@ -92,7 +92,13 @@ docs/               # 문서 관리 (서기관리 에이전트)
 | Form | React Hook Form + Zod | 7.71.1 / 4.3.5 |
 | Package Manager | pnpm | 10.17.1 |
 
-## 9. 컨벤션
+## 9. AI 모델 전략
+
+- **Orchestrator 2-Tier (Ollama 로컬)**: 자료 수집·개발은 Gemma 4 26B (고성능 고정), 유저 대면 콘텐츠는 Gemma 4 12B (경량) — orchestrator 레포 참조
+- **서비스 LLM**: TBD (Step 6 아키텍처 설계 시 결정). 유저 대면이므로 경량 모델 예정
+- LLM 호출은 Server Components / Route Handlers에서만 수행 (API 키 보호)
+
+## 10. 컨벤션
 
 - `@/*` path alias 필수 사용 (상대 경로 금지)
 - shadcn/ui 컴포넌트는 `components/ui/`에 위치
@@ -100,7 +106,7 @@ docs/               # 문서 관리 (서기관리 에이전트)
 - Base color: slate
 - 서버 상태와 클라이언트 상태 혼용 금지
 
-## 10. 관련 문서
+## 11. 관련 문서
 
 - `CLAUDE.md` — 에이전트 컨텍스트 (Claude Code용)
 - `docs/README.md` — 문서 관리 허브
