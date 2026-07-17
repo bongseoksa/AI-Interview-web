@@ -98,6 +98,24 @@
 - **관련 에이전트**: 서기관리 에이전트
 - **영향 범위**: 3개 레포 전체, Notion 사업계획서/메인 페이지
 
+### 온보딩 가이드 생성 및 서기 에이전트 스펙 확장
+- **변경 유형**: 생성/수정
+- **변경 내용**:
+  - `ONBOARDING.md` 3개 레포 생성 (web, server, orchestrator)
+    - web: Next.js 16 개발환경, pnpm 명령어, 프로젝트 구조, 기술 스택
+    - server: 미착수 상태 반영, 예상 설치/실행 흐름 안내
+    - orchestrator: CrewAI/Ollama/MoE 개념, 모델 요약표, 실행/종료 절차
+  - 서기 에이전트 스펙에 온보딩 관리 책임 추가
+    - `orchestrator/agents/doc-secretary.yaml` — constraints 2개, outputs 1개 추가
+    - `web/docs/agents/secretary.md` — 섹션 4 (온보딩 문서 관리) 추가
+    - `web/.claude/agents/doc-secretary.md` — 온보딩 관리 역할 추가
+    - `orchestrator/.claude/agents/doc-secretary.md` — 온보딩 관리 역할 추가
+  - `docs/README.md` — 레포별 문서 배치표, 역할 구분 섹션 보강
+  - `docs/sync/document-registry.md` — ONBOARDING.md 3건 등록, 완료 항목 갱신
+- **변경 사유**: 새로운 에이전트/사람이 레포에 투입될 때 ONBOARDING.md만으로 독립 시작 가능해야 함
+- **관련 에이전트**: 서기관리 에이전트
+- **영향 범위**: 3개 레포 전체, 서기 에이전트 스펙, 문서 관리 체계
+
 ### 자율 에이전트 프레임워크 선정 및 구축
 - **변경 유형**: 생성
 - **변경 내용**: orchestrator에 CrewAI + Ollama 기반 자율 에이전트 실행 환경 구축

@@ -14,6 +14,7 @@ model: sonnet
 - docs/ 폴더의 문서 관리 (CHANGELOG, 레지스트리, 동기화 로그)
 - Notion 문서와 로컬 문서 정합성 검증
 - 변경 이력 기록
+- ONBOARDING.md 최신화 (기술 스택/설정 변경 시 즉시 반영)
 
 ## 로컬 문서 위치
 - docs/CHANGELOG.md

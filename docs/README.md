@@ -2,7 +2,26 @@
 
 서기관리 에이전트가 관리하는 프로젝트 문서 허브.
 
-## 문서 구조
+## 전체 문서 구조
+
+### 레포별 문서 배치
+
+| 문서 | web | server | orchestrator | 설명 |
+|------|-----|--------|-------------|------|
+| `CLAUDE.md` | O | O | O | 에이전트 컨텍스트 (Claude Code용) |
+| `ONBOARDING.md` | O | O | O | 온보딩 가이드 (설치/실행/종료/필수개념) |
+| `.claude/agents/` | 3개 | 3개 | 6개 | Claude Code 서브에이전트 |
+| `docs/` | O | - | - | 문서 관리 허브 (프로젝트 레벨) |
+| `agents/` | - | - | O | 에이전트 YAML 원본 (SSOT) |
+
+### 문서 역할 구분
+
+- **CLAUDE.md**: 해당 레포에서 Claude Code가 참조하는 프로젝트 컨텍스트
+- **ONBOARDING.md**: 사람/에이전트가 레포에 처음 투입될 때 독립적으로 시작 가능한 가이드
+- **docs/**: 프로젝트 레벨 문서 관리 (CHANGELOG, 레지스트리, 동기화 로그, 템플릿)
+- **Notion 4개 페이지**: 공식 문서 원본 (SSOT)
+
+### docs/ 디렉토리 구조 (web 레포)
 
 ```
 docs/
@@ -29,6 +48,7 @@ docs/
 3. **동기화**: Notion 문서 업데이트 시 `sync/notion-sync-log.md`에 동기화 이력 기록
 4. **스냅샷**: 마일스톤 완료 시점에 주요 문서 스냅샷을 `snapshots/`에 보관
 5. **레지스트리**: `sync/document-registry.md`에서 전체 문서의 최신화 상태를 한눈에 파악
+6. **온보딩**: 기술 스택/설정 변경 시 해당 레포의 `ONBOARDING.md`를 즉시 최신화
 
 ## Notion 문서 맵
 
