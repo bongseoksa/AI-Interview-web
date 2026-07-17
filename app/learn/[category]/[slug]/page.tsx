@@ -4,7 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getAllNodes, getNodeBySlug } from "@/lib/supabase/queries";
+import { getProgressByNodeId } from "@/app/actions/progress";
 import { CATEGORY_MAP, DIFFICULTY_LABELS } from "@/constants/categories";
+import { CompletionButton } from "@/components/learn/completion-button";
 import type { CategoryType } from "@/types/database";
 
 export async function generateStaticParams() {
@@ -125,6 +127,11 @@ export default async function ConceptPage({
         )}
       </div>
 
+      {/* 학습 완료 버튼 */}
+      <div className="mt-6">
+        <CompletionButtonWrapper nodeId={node.id} />
+      </div>
+
       <Separator className="my-8" />
 
       {/* 하단 네비게이션 */}
@@ -143,5 +150,15 @@ export default async function ConceptPage({
         </Link>
       </div>
     </main>
+  );
+}
+
+async function CompletionButtonWrapper({ nodeId }: { nodeId: string }) {
+  const progress = await getProgressByNodeId(nodeId);
+  return (
+    <CompletionButton
+      nodeId={nodeId}
+      initialMastery={progress?.mastery_level ?? null}
+    />
   );
 }

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getNodesByCategory } from "@/lib/supabase/queries";
+import { getUserProgress } from "@/app/actions/progress";
 import { CATEGORIES, CATEGORY_MAP, DIFFICULTY_LABELS } from "@/constants/categories";
 import type { CategoryType } from "@/types/database";
 
@@ -33,7 +34,13 @@ export default async function CategoryPage({
   const meta = CATEGORY_MAP[category as CategoryType];
   if (!meta) notFound();
 
-  const nodes = await getNodesByCategory(category as CategoryType);
+  const [nodes, progressList] = await Promise.all([
+    getNodesByCategory(category as CategoryType),
+    getUserProgress(),
+  ]);
+  const progressMap = new Map(
+    progressList.map((p) => [p.node_id, p.mastery_level])
+  );
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
@@ -42,7 +49,7 @@ export default async function CategoryPage({
           href="/dashboard"
           className="text-sm text-muted-foreground hover:underline"
         >
-          ← 대시보드
+          &larr; 대시보드
         </Link>
         <div className="flex items-center gap-3">
           <span className="text-3xl">{meta.icon}</span>
@@ -56,12 +63,15 @@ export default async function CategoryPage({
       <div className="space-y-3">
         {nodes.map((node) => {
           const diff = DIFFICULTY_LABELS[node.difficulty || "junior"];
+          const mastery = progressMap.get(node.id);
+          const isCompleted = mastery !== undefined && mastery >= 80;
           return (
             <Link key={node.id} href={`/learn/${category}/${node.slug}`}>
-              <Card className="transition-colors hover:border-primary">
+              <Card className={`transition-colors hover:border-primary ${isCompleted ? "border-green-300 bg-green-50/50 dark:border-green-800 dark:bg-green-950/20" : ""}`}>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-base font-medium">
+                    <CardTitle className="flex items-center gap-2 text-base font-medium">
+                      {isCompleted && <span className="text-green-600">&#10003;</span>}
                       {node.title}
                     </CardTitle>
                     <Badge

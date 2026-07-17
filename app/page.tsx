@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { UserNav } from "@/components/common/user-nav";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
+      {/* Header */}
+      <header className="flex items-center justify-between px-6 py-4">
+        <span className="text-lg font-semibold">AI Interview</span>
+        <UserNav />
+      </header>
+
       {/* Hero */}
       <section className="flex flex-1 flex-col items-center justify-center gap-8 px-4 py-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
@@ -38,7 +45,7 @@ export default function Home() {
             <div className="text-3xl">📚</div>
             <h3 className="text-lg font-semibold">체계적 커리큘럼</h3>
             <p className="text-sm text-muted-foreground">
-              8개 카테고리, 138개 핵심 개념을 단계별로 학습하세요.
+              9개 카테고리, 151개 핵심 개념을 단계별로 학습하세요.
             </p>
           </div>
           <div className="space-y-2 text-center">

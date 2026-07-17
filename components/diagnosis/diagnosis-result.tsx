@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { useDiagnosisStore, type AnswerLevel } from "@/store/diagnosis";
+import { useAuth } from "@/providers/auth-provider";
+import { upsertProgress } from "@/app/actions/progress";
 import { CATEGORIES, CATEGORY_MAP } from "@/constants/categories";
 import type { CategoryType } from "@/types/database";
 
@@ -40,6 +43,21 @@ export function DiagnosisResult() {
   const categoryResults = useDiagnosisStore((s) => s.getCategoryResults());
   const weakCategories = useDiagnosisStore((s) => s.getWeakCategories());
   const reset = useDiagnosisStore((s) => s.reset);
+  const { user } = useAuth();
+  const savedRef = useRef(false);
+
+  // 진단 결과를 user_progress에 저장
+  useEffect(() => {
+    if (!user || savedRef.current || answers.length === 0) return;
+    savedRef.current = true;
+
+    for (const answer of answers) {
+      const q = questions.find((q) => q.id === answer.questionId);
+      if (!q) continue;
+      const mastery = LEVEL_CONFIG[answer.level].score;
+      upsertProgress(q.node_id, mastery);
+    }
+  }, [user, answers, questions]);
 
   // Overall score
   const totalScore =
