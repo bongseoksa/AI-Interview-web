@@ -85,6 +85,16 @@ All imports use `@/*` alias mapped to the project root:
 2. **산출물 기반 구현** — Claude Code는 에이전트 산출물(`AI-Interview-orchestrator/output/`)을 입력으로 받아 코드를 구현한다.
 3. **에이전트 검증** — 구현 완료 후 QACrew 테스트 케이스 및 DocumentationCrew 문서 감사로 검증한다.
 
+### Orchestrator 코드 생성
+
+Orchestrator 레포의 CodegenCrew가 이 레포에 직접 코드 파일을 생성할 수 있다:
+```bash
+# orchestrator 레포에서 실행
+python main.py codegen web "학습 페이지 컴포넌트 생성"
+```
+- 에이전트가 이 레포의 구조를 분석한 후 설계 문서 기반으로 코드 생성
+- 생성된 파일은 리뷰 후 커밋
+
 ### 금지 사항
 
 - 에이전트 산출물 없이 새로운 마일스톤의 구현을 시작하지 않는다
