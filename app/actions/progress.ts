@@ -28,7 +28,7 @@ export async function upsertProgress(nodeId: string, masteryLevel: number) {
   }
 
   revalidatePath("/dashboard");
-  revalidatePath("/learn/map");
+  revalidatePath("/learn", "layout");
   return { success: true };
 }
 
