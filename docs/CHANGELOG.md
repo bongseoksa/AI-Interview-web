@@ -97,3 +97,21 @@
 - **비용 제약**: orchestrator에 Claude API 토큰 사용 불가, 향후 자율 실행 시 Ollama + CrewAI
 - **관련 에이전트**: 서기관리 에이전트
 - **영향 범위**: 3개 레포 전체, Notion 사업계획서/메인 페이지
+
+### 자율 에이전트 프레임워크 선정 및 구축
+- **변경 유형**: 생성
+- **변경 내용**: orchestrator에 CrewAI + Ollama 기반 자율 에이전트 실행 환경 구축
+  - 프레임워크 비교 검토: CrewAI vs LangGraph vs smolagents vs AutoGen vs Swarm
+  - **CrewAI v1.15.3** 채택 (MIT, self-hosted 무료, role 기반 구조 1:1 매핑)
+  - **Ollama + Qwen3 14B** 기본 모델 (M4 Pro 48GB, 무료)
+  - `orchestrator/src/config/agents.yaml` — 10개 에이전트 CrewAI 형식 정의
+  - `orchestrator/src/config/tasks.yaml` — Step별 태스크 정의
+  - `orchestrator/src/config/llm.py` — Ollama LLM 설정
+  - `orchestrator/src/crews/research_crew.py` — Step 1 시장 조사 Crew
+  - `orchestrator/src/crews/planning_crew.py` — Step 2-4 기획 Crew
+  - `orchestrator/main.py` — 실행 엔트리포인트
+  - `orchestrator/pyproject.toml` — Python 프로젝트 설정
+  - `orchestrator/CLAUDE.md` — AI 모델/프레임워크 정보 추가
+- **변경 사유**: orchestrator에 AI 모델이 정의되지 않아 자율 에이전트 실행 불가능했음
+- **관련 에이전트**: 서기관리 에이전트
+- **영향 범위**: orchestrator 레포, Notion 사업계획서/메인 페이지
