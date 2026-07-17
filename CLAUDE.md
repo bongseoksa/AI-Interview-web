@@ -51,11 +51,29 @@ All imports use `@/*` alias mapped to the project root:
 - **서비스 LLM**: TBD (Step 6 아키텍처 설계 시 결정). 유저 대면이므로 경량 모델 예정
 - LLM 호출은 반드시 Server Components / Route Handlers를 통해 수행 (API 키 클라이언트 노출 방지)
 
+### i18n (다국어)
+
+- **라이브러리**: next-intl 4.x (App Router native)
+- **지원 언어**: `ko` (기본), `en`
+- **URL 전략**: `[locale]` prefix 라우팅 (`/ko/dashboard`, `/en/dashboard`)
+- **설정 파일**:
+  - `i18n/routing.ts` — 로케일 정의
+  - `i18n/request.ts` — 런타임 메시지 로딩
+  - `i18n/navigation.ts` — locale-aware Link, useRouter
+- **번역 JSON**: `messages/ko.json`, `messages/en.json` (7개 네임스페이스)
+- **Server Component**: `setRequestLocale(locale)` + `getTranslations()` (from `next-intl/server`)
+- **Client Component**: `useTranslations()` (from `next-intl`)
+- **DB 콘텐츠 번역**: `node_translations` / `question_translations` 테이블 (locale별 fallback)
+- **번역 파이프라인**: orchestrator의 `scripts/translate_content.py` (gemma4:12b via Ollama)
+- **Middleware**: `next-intl/middleware` (locale 감지 + 리다이렉트)
+
 ### Conventions
 - Use path aliases (`@/`) instead of relative imports
 - shadcn/ui components go in `components/ui/` (auto-generated)
 - CSS variables for theming (defined in `app/globals.css`)
 - Base color: slate
+- **i18n**: 새 페이지/컴포넌트 추가 시 `messages/ko.json`과 `messages/en.json` 모두 번역 키 추가 필수
+- **Navigation**: `next/link` 대신 `@/i18n/navigation`의 `Link` 사용 (locale 자동 처리)
 
 ## 개발 역할 분담 (필수 원칙)
 
