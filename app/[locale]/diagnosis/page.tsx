@@ -24,7 +24,7 @@ export default async function DiagnosisPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const questions = await getDiagnosticQuestions();
+  const questions = await getDiagnosticQuestions(locale);
 
   return <DiagnosisClient questions={questions} />;
 }

@@ -45,7 +45,7 @@ export default async function CategoryPage({
   if (!meta) notFound();
 
   const [nodes, progressList, tc, td, tl] = await Promise.all([
-    getNodesByCategory(decodedCategory as CategoryType),
+    getNodesByCategory(decodedCategory as CategoryType, locale),
     getUserProgress(),
     getTranslations("categories"),
     getTranslations("difficulty"),
@@ -101,7 +101,7 @@ export default async function CategoryPage({
                 <CardContent>
                   {node.key_keywords && node.key_keywords.length > 0 && (
                     <div className="flex flex-wrap gap-1">
-                      {node.key_keywords.slice(0, 5).map((kw) => (
+                      {node.key_keywords.slice(0, 5).map((kw: string) => (
                         <Badge key={kw} variant="secondary" className="text-xs">
                           {kw}
                         </Badge>

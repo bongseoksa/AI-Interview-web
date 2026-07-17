@@ -65,6 +65,50 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["questions"]["Insert"]>;
         Relationships: [];
       };
+      node_translations: {
+        Row: {
+          id: string;
+          node_id: string;
+          locale: string;
+          title: string;
+          content_body: string | null;
+          key_keywords: string[] | null;
+          default_tip: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          node_id: string;
+          locale: string;
+          title: string;
+          content_body?: string | null;
+          key_keywords?: string[] | null;
+          default_tip?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["node_translations"]["Insert"]>;
+        Relationships: [];
+      };
+      question_translations: {
+        Row: {
+          id: string;
+          question_id: string;
+          locale: string;
+          question: string;
+          answer_guide: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          question_id: string;
+          locale: string;
+          question: string;
+          answer_guide?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["question_translations"]["Insert"]>;
+        Relationships: [];
+      };
       user_progress: {
         Row: {
           id: string;

@@ -30,7 +30,8 @@ export async function generateMetadata({
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
   try {
-    const node = await getNodeBySlug(decodedSlug);
+    const { locale } = await params;
+    const node = await getNodeBySlug(decodedSlug, locale);
     return {
       title: `${node.title} | AI Interview`,
       description: node.content_body?.slice(0, 160) || node.title,
@@ -55,7 +56,7 @@ export default async function ConceptPage({
 
   let node;
   try {
-    node = await getNodeBySlug(decodedSlug);
+    node = await getNodeBySlug(decodedSlug, locale);
   } catch {
     notFound();
   }
@@ -123,7 +124,7 @@ export default async function ConceptPage({
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {node.key_keywords.map((kw) => (
+                {node.key_keywords.map((kw: string) => (
                   <Badge key={kw} variant="secondary" className="text-sm">
                     {kw}
                   </Badge>
