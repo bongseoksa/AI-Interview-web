@@ -42,6 +42,7 @@ const CATEGORY_MAP: Record<string, string> = {
   "형상관리(Git/CI-CD)": "version_control",
   "형상관리": "version_control",
   "성능/SEO": "performance_seo",
+  "AI/LLM 통합": "ai_llm",
 };
 
 // 난이도 매핑

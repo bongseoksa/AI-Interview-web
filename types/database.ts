@@ -6,7 +6,8 @@ export type CategoryType =
   | "nextjs"
   | "infra_security_network"
   | "version_control"
-  | "performance_seo";
+  | "performance_seo"
+  | "ai_llm";
 
 export type Difficulty = "junior" | "mid" | "senior";
 

@@ -65,6 +65,13 @@ export const CATEGORIES: CategoryMeta[] = [
     icon: "🚀",
     color: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
   },
+  {
+    key: "ai_llm",
+    label: "AI/LLM 통합",
+    description: "스트리밍 UI, RAG, 프롬프트 엔지니어링, AI 보안",
+    icon: "🤖",
+    color: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+  },
 ];
 
 export const CATEGORY_MAP = Object.fromEntries(

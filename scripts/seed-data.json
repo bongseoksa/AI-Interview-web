@@ -964,5 +964,96 @@
     "difficulty": "주니어",
     "answer_guide": "도메인→IP 변환. 로컬 캐시 → 재귀 DNS 서버 → 루트 → TLD → 권한 네임서버 순서 조회. A/AAAA/CNAME/MX 레코드. TTL로 캐시 관리. DNS 프리페칭으로 성능 최적화.",
     "keywords": "DNS, 도메인, IP, 재귀 조회, TTL, 프리페칭"
+  },
+  {
+    "title": "SSE(Server-Sent Events)와 WebSocket의 차이를 설명하고, LLM 스트리밍 응답에 SSE가 더 적합한 이유를 말해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "주니어",
+    "answer_guide": "SSE는 서버→클라이언트 단방향, HTTP 기반으로 구현이 간단합니다. WebSocket은 양방향이지만 LLM 응답은 서버→클라이언트 단방향이므로 SSE가 적합합니다. text/event-stream MIME 타입, 자동 재연결, EventSource API 등이 장점입니다.",
+    "keywords": "SSE, WebSocket, EventSource, text/event-stream, 단방향, 양방향"
+  },
+  {
+    "title": "ReadableStream API를 활용한 LLM 스트리밍 응답 처리 방법을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "주니어",
+    "answer_guide": "fetch API의 response.body는 ReadableStream을 반환합니다. getReader()로 청크 단위 읽기, TextDecoder로 디코딩, while 루프로 done까지 반복 처리합니다. React에서는 state를 점진적으로 업데이트하여 타이핑 효과를 구현합니다.",
+    "keywords": "ReadableStream, getReader, TextDecoder, fetch, 스트리밍, 청크"
+  },
+  {
+    "title": "AbortController를 사용한 LLM API 요청 취소 패턴을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "주니어",
+    "answer_guide": "AbortController의 signal을 fetch에 전달하고, abort()로 요청을 취소합니다. 사용자가 채팅 중단 버튼을 누르거나 컴포넌트 언마운트 시 cleanup으로 활용합니다. AbortError를 catch하여 정상 취소와 에러를 구분합니다.",
+    "keywords": "AbortController, AbortSignal, abort, fetch, cleanup, 요청 취소"
+  },
+  {
+    "title": "LLM 스트리밍 응답 중 연결이 끊겼을 때의 재연결 전략을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "미드",
+    "answer_guide": "SSE의 Last-Event-ID를 활용한 자동 재연결, Exponential Backoff 전략, 부분 응답 캐싱 후 이어받기 등이 있습니다. 프론트엔드에서는 연결 상태를 추적하고 사용자에게 재시도 UI를 제공해야 합니다.",
+    "keywords": "Last-Event-ID, Exponential Backoff, 재연결, 부분 응답, 연결 상태"
+  },
+  {
+    "title": "LLM 응답 지연 시 사용자 경험을 개선하는 UI 패턴들을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "주니어",
+    "answer_guide": "스트리밍 UI(타이핑 애니메이션), Skeleton 로딩, Progressive Rendering, 예상 대기 시간 표시, 취소 버튼 제공 등이 있습니다. 사용자가 응답을 기다리는 동안 맥락을 유지하도록 인터페이스를 설계합니다.",
+    "keywords": "스트리밍 UI, Skeleton, Progressive Rendering, 타이핑 효과, UX"
+  },
+  {
+    "title": "토큰 컨텍스트 윈도우 관리 전략(슬라이딩 윈도우, 요약)을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "미드",
+    "answer_guide": "LLM은 고정된 컨텍스트 윈도우(토큰 제한)가 있습니다. 슬라이딩 윈도우는 오래된 메시지를 제거하고, 요약 전략은 이전 대화를 LLM으로 요약하여 압축합니다. tiktoken 등으로 토큰 수를 사전 계산하여 초과를 방지합니다.",
+    "keywords": "컨텍스트 윈도우, 슬라이딩 윈도우, 토큰, tiktoken, 요약, 대화 압축"
+  },
+  {
+    "title": "RAG(Retrieval-Augmented Generation)에서 프론트엔드의 역할을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "미드",
+    "answer_guide": "프론트엔드는 문서 업로드 UI, 검색 결과 인용(citation) 표시, 출처 신뢰도 시각화, 청크 하이라이팅 등을 담당합니다. 사용자가 AI 응답의 근거를 확인할 수 있도록 출처 링크와 관련 문서 미리보기를 제공합니다.",
+    "keywords": "RAG, 문서 업로드, citation, 신뢰도, 청크, 출처"
+  },
+  {
+    "title": "멀티모달 AI 서비스에서 이미지 전송 최적화 방법을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "시니어",
+    "answer_guide": "Canvas API로 클라이언트 측 리사이즈, WebP 변환으로 용량 절감, Base64 vs 멀티파트 전송 비교, detail 파라미터(low/high)로 분석 수준 조절 등이 있습니다. 이미지 크기와 품질의 트레이드오프를 고려합니다.",
+    "keywords": "Canvas, WebP, Base64, 멀티파트, detail, 이미지 최적화"
+  },
+  {
+    "title": "실시간 마크다운 렌더링에서 불완전한 청크 처리 방법을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "미드",
+    "answer_guide": "스트리밍 중 마크다운이 불완전한 상태(열린 코드블록, 미완성 링크 등)에서 파싱 에러를 방지해야 합니다. Incremental parsing, 버퍼링 전략, CLS 방지를 위한 레이아웃 예약 등이 필요합니다.",
+    "keywords": "마크다운, incremental parsing, 불완전 청크, CLS, 버퍼링"
+  },
+  {
+    "title": "AI 생성 콘텐츠의 XSS 방지를 위한 프론트엔드 보안 전략을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "시니어",
+    "answer_guide": "LLM이 악의적 HTML/JS를 생성할 수 있으므로 DOMPurify로 새니타이징, iframe 샌드박스로 격리, CSP 헤더 설정, 화이트리스트 기반 태그 허용 등이 필요합니다. dangerouslySetInnerHTML 사용 시 특히 주의해야 합니다.",
+    "keywords": "XSS, DOMPurify, CSP, iframe sandbox, 새니타이징, 화이트리스트"
+  },
+  {
+    "title": "AI 서비스의 비결정적 응답에 대한 프론트엔드 상태 관리 전략을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "시니어",
+    "answer_guide": "LLM 응답은 동일 입력에도 다른 결과를 반환합니다. 스트리밍 상태(pending/streaming/complete/error), 응답 버전 관리, 캐싱 전략(같은 질문이라도 캐시하지 않거나 TTL 짧게), Graceful Degradation 패턴 등이 필요합니다.",
+    "keywords": "비결정적, 상태 관리, 스트리밍 상태, 캐싱, Graceful Degradation"
+  },
+  {
+    "title": "AI 응답 품질 검증을 위한 프론트엔드 전략(confidence score, 교차 검증)을 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "시니어",
+    "answer_guide": "Confidence score 시각화, 교차 검증(여러 모델 응답 비교), A/B 테스트 프레임워크, 사용자 피드백 수집(👍/👎), 할루시네이션 탐지 UI 등이 있습니다. 사용자가 AI 응답의 신뢰도를 판단할 수 있는 정보를 제공합니다.",
+    "keywords": "confidence score, 교차 검증, A/B 테스트, 피드백, 할루시네이션"
+  },
+  {
+    "title": "Base64와 멀티파트(FormData)를 사용한 이미지 AI API 전송의 차이를 설명해주세요.",
+    "category": "AI/LLM 통합",
+    "difficulty": "주니어",
+    "answer_guide": "Base64는 JSON 본문에 포함 가능하나 용량이 33% 증가합니다. 멀티파트(FormData)는 바이너리 그대로 전송하여 효율적이나 서버 파싱이 필요합니다. 소용량은 Base64, 대용량은 멀티파트가 적합합니다.",
+    "keywords": "Base64, FormData, 멀티파트, 바이너리, JSON, 이미지 전송"
   }
 ]

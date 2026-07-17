@@ -56,3 +56,18 @@ All imports use `@/*` alias mapped to the project root:
 - shadcn/ui components go in `components/ui/` (auto-generated)
 - CSS variables for theming (defined in `app/globals.css`)
 - Base color: slate
+
+## 개발 역할 분담 (필수 원칙)
+
+**Orchestrator 레포(`AI-Interview-orchestrator`)의 에이전트가 설계를 주도하고, Claude Code는 서포트 역할로 구현한다.**
+
+### 워크플로우
+
+1. **에이전트 설계 먼저** — 새 마일스톤 착수 시, Orchestrator에서 관련 Crew(FrontendCrew, QACrew 등)를 실행하여 컴포넌트 설계·페이지 구조·테스트 전략 산출물을 먼저 생성한다.
+2. **산출물 기반 구현** — Claude Code는 에이전트 산출물(`AI-Interview-orchestrator/output/`)을 입력으로 받아 코드를 구현한다.
+3. **에이전트 검증** — 구현 완료 후 QACrew 테스트 케이스 및 DocumentationCrew 문서 감사로 검증한다.
+
+### 금지 사항
+
+- 에이전트 산출물 없이 새로운 마일스톤의 구현을 시작하지 않는다
+- 에이전트 설계와 다른 방향의 구현은 반드시 사유를 기록한다
