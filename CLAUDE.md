@@ -9,111 +9,44 @@ This project uses **pnpm** (v10.17.1) as the package manager. Always use `pnpm` 
 ## Development Commands
 
 ```bash
-# Install dependencies
-pnpm install
-
-# Start development server (runs on http://localhost:3000)
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Start production server
-pnpm start
-
-# Run ESLint
-pnpm lint
+pnpm install        # Install dependencies
+pnpm dev            # Start dev server with Turbopack (http://localhost:3000)
+pnpm build          # Build for production
+pnpm start          # Start production server
+pnpm lint           # Run ESLint
 
 # Add shadcn/ui components
-npx shadcn@latest add [component-name]
-# Example: npx shadcn@latest add button
+pnpm dlx shadcn@latest add [component-name]
 ```
 
 ## Architecture Overview
 
 ### Tech Stack
 - **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 3.4.x (Note: v4 is not compatible with current setup)
+- **Language**: TypeScript 5.9.x
+- **Runtime**: React 19.x
+- **Styling**: Tailwind CSS 3.4.x
 - **UI Components**: shadcn/ui
-- **State Management**: Zustand (client state) + TanStack Query (server state)
-- **Forms**: React Hook Form + Zod
-
-### State Management Strategy
-
-**Client State (Zustand)**
-- Use for UI state, user preferences, and application-level state
-- Located in `/store` directory
-- Pattern: Create stores with devtools and persist middleware
-- Example: `useUserStore` demonstrates the standard pattern with TypeScript interfaces
-
-**Server State (TanStack Query)**
-- Use for all server data fetching and caching
-- QueryProvider is configured in `/providers/query-provider.tsx` with:
-  - 1-minute stale time
-  - Disabled refetch on window focus
-  - React Query Devtools enabled in development
-
-### Provider Architecture
-
-All providers are composed in the root layout (`app/layout.tsx`). Currently includes:
-- QueryProvider for TanStack Query
-
-When adding new providers, nest them in the root layout in this order:
-1. Theme providers (if needed)
-2. QueryProvider (already configured)
-3. Auth providers (if needed)
-4. Other context providers
-
-### Form Validation Pattern
-
-Forms use React Hook Form with Zod schemas:
-1. Define Zod schemas in `/schemas` directory
-2. Export TypeScript types using `z.infer<typeof schema>`
-3. Use `@hookform/resolvers/zod` to integrate with React Hook Form
-4. See `/schemas/auth.ts` for reference implementation
-
-### shadcn/ui Integration
-
-Configuration in `components.json`:
-- Components install to `@/components/ui`
-- Uses CSS variables for theming (defined in `app/globals.css`)
-- Base color: slate
-- Path aliases configured in `tsconfig.json`
-
-Utility function `cn()` in `lib/utils.ts` combines clsx and tailwind-merge for className management.
+- **State (Client)**: Zustand 5.x
+- **State (Server)**: TanStack Query 5.x
+- **Forms**: React Hook Form 7.x + Zod 4.x
 
 ### Path Aliases
 
-The following path aliases are configured:
-- `@/components` → `/components`
-- `@/lib` → `/lib`
-- `@/hooks` → `/hooks`
-- `@/utils` → `/utils`
-- `@/types` → `/types`
-- `@/store` → `/store`
-- `@/schemas` → `/schemas`
-- `@/services` → `/services`
-- `@/constants` → `/constants`
-- `@/providers` → `/providers`
+All imports use `@/*` alias mapped to the project root:
+- `@/app` - Next.js App Router pages and layouts
+- `@/components` - React components (including `@/components/ui` for shadcn)
+- `@/lib` - Utility functions (cn, etc.)
+- `@/hooks` - Custom React hooks
+- `@/store` - Zustand stores
+- `@/types` - TypeScript type definitions
+- `@/schemas` - Zod validation schemas
+- `@/services` - API service functions
+- `@/constants` - Application constants
+- `@/providers` - React context providers
 
-Always use these aliases instead of relative imports for better maintainability.
-
-### Directory Structure
-
-- `/app` - Next.js App Router pages and layouts
-- `/components` - React components
-  - `/ui` - shadcn/ui components (auto-generated)
-- `/providers` - React context providers
-- `/store` - Zustand stores for client state
-- `/schemas` - Zod validation schemas
-- `/services` - API service functions
-- `/hooks` - Custom React hooks
-- `/lib` - Utility functions and shared libraries
-- `/types` - TypeScript type definitions
-- `/utils` - Helper functions
-- `/constants` - Application constants
-
-### Environment Variables
-
-Copy `.env.example` to `.env` for local development. The example file shows all required environment variables.
+### Conventions
+- Use path aliases (`@/`) instead of relative imports
+- shadcn/ui components go in `components/ui/` (auto-generated)
+- CSS variables for theming (defined in `app/globals.css`)
+- Base color: slate
