@@ -16,12 +16,10 @@ export default function Home() {
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
           <Button asChild size="lg">
-            <Link href="/dashboard">학습 시작하기</Link>
+            <Link href="/diagnosis">취약 영역 진단하기</Link>
           </Button>
-          <Button asChild variant="outline" size="lg" disabled>
-            <span className="cursor-not-allowed opacity-50">
-              면접 연습하기 (Phase 1)
-            </span>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/dashboard">학습 시작하기</Link>
           </Button>
         </div>
       </section>

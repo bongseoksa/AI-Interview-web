@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getCategoryCounts } from "@/lib/supabase/queries";
 import { CATEGORIES } from "@/constants/categories";
 
@@ -23,6 +24,14 @@ export default async function DashboardPage() {
         <p className="text-muted-foreground">
           총 {totalNodes}개 핵심 개념을 8개 카테고리로 학습하세요.
         </p>
+        <div className="flex gap-3 pt-2">
+          <Button asChild>
+            <Link href="/diagnosis">메타인지 진단</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/learn/map">취약 맵</Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
