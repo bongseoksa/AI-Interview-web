@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,28 +14,29 @@ import {
 import type { CategoryType } from "@/types/database";
 import { useState } from "react";
 
-const ANSWER_OPTIONS: { value: AnswerLevel; label: string; description: string; color: string }[] = [
+const ANSWER_OPTIONS: { value: AnswerLevel; labelKey: string; descKey: string; color: string }[] = [
   {
     value: "know",
-    label: "안다",
-    description: "이 질문에 논리적으로 답변할 수 있다",
+    labelKey: "answerKnow",
+    descKey: "answerKnowDesc",
     color: "border-green-500 bg-green-50 dark:bg-green-950",
   },
   {
     value: "vague",
-    label: "애매하다",
-    description: "들어봤지만 명확하게 설명하기 어렵다",
+    labelKey: "answerVague",
+    descKey: "answerVagueDesc",
     color: "border-yellow-500 bg-yellow-50 dark:bg-yellow-950",
   },
   {
     value: "unknown",
-    label: "모른다",
-    description: "처음 듣거나 전혀 답할 수 없다",
+    labelKey: "answerUnknown",
+    descKey: "answerUnknownDesc",
     color: "border-red-500 bg-red-50 dark:bg-red-950",
   },
 ];
 
 export function DiagnosisQuestion() {
+  const t = useTranslations("diagnosis");
   const questions = useDiagnosisStore((s) => s.questions);
   const currentIndex = useDiagnosisStore((s) => s.currentIndex);
   const answer = useDiagnosisStore((s) => s.answer);
@@ -60,7 +62,7 @@ export function DiagnosisQuestion() {
       <div className="mb-8 space-y-2">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
-            질문 {currentIndex + 1} / {questions.length}
+            {t("questionProgress", { current: currentIndex + 1, total: questions.length })}
           </span>
           <span>{Math.round(progress)}%</span>
         </div>
@@ -81,7 +83,7 @@ export function DiagnosisQuestion() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            이 질문에 면접에서 답변할 수 있는지 스스로 판단해주세요.
+            {t("selfCheck")}
           </p>
         </CardContent>
       </Card>
@@ -102,8 +104,8 @@ export function DiagnosisQuestion() {
           >
             <RadioGroupItem value={opt.value} id={`answer-${opt.value}`} />
             <div>
-              <span className="font-medium">{opt.label}</span>
-              <p className="text-sm text-muted-foreground">{opt.description}</p>
+              <span className="font-medium">{t(opt.labelKey)}</span>
+              <p className="text-sm text-muted-foreground">{t(opt.descKey)}</p>
             </div>
           </label>
         ))}
@@ -117,7 +119,7 @@ export function DiagnosisQuestion() {
           className="flex-1"
           size="lg"
         >
-          {currentIndex + 1 === questions.length ? "결과 확인" : "다음 질문"}
+          {currentIndex + 1 === questions.length ? t("viewResult") : t("nextQuestion")}
         </Button>
         <Button
           onClick={() => {
@@ -127,7 +129,7 @@ export function DiagnosisQuestion() {
           variant="ghost"
           size="lg"
         >
-          건너뛰기
+          {t("skipQuestion")}
         </Button>
       </div>
     </main>

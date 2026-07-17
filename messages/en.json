@@ -1,0 +1,157 @@
+{
+  "common": {
+    "siteName": "AI Interview",
+    "siteDescription": "AI-powered mock interview practice for frontend engineers",
+    "backToHome": "Home",
+    "backToDashboard": "Dashboard",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "retry": "Retry",
+    "errorLoad": "Failed to load data",
+    "errorNetwork": "A network or server error occurred. Please try again later.",
+    "goToDashboard": "Go to Dashboard"
+  },
+  "auth": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "At least 6 characters",
+    "description": "Please {mode} to save your learning progress.",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "errorInvalidCredentials": "Invalid email or password.",
+    "errorEmailNotConfirmed": "Email not confirmed. Please check your inbox.",
+    "errorAlreadyRegistered": "This email is already registered.",
+    "successEmailSent": "Verification email sent. Please check your inbox.",
+    "loginAndRecord": "Log in to save progress"
+  },
+  "landing": {
+    "heroTitle": "AI Interview",
+    "heroDescription": "AI-powered technical learning and mock interview practice for frontend engineers.\nStart by identifying what you know and what you don't.",
+    "diagnosisButton": "Diagnose Weak Areas",
+    "startLearning": "Start Learning",
+    "featureMetacognition": "Metacognitive Learning",
+    "featureMetacognitionDesc": "Identify what you know and don't know, and visually pinpoint your weak areas.",
+    "featureCurriculum": "Structured Curriculum",
+    "featureCurriculumDesc": "Learn 151 core concepts across 9 categories step by step.",
+    "featureFrontend": "Frontend Focused",
+    "featureFrontendDesc": "Covering core frontend topics: HTML, CSS, JS, React, Next.js, and more.",
+    "footer": "AI Interview — A new way to prepare for frontend interviews"
+  },
+  "dashboard": {
+    "title": "Curriculum Dashboard",
+    "metaTitle": "Curriculum Dashboard | AI Interview",
+    "metaDescription": "Learning progress across 9 frontend categories",
+    "totalProgress": "{completed} of {total} core concepts completed",
+    "diagnosisButton": "Metacognition Diagnosis",
+    "mapButton": "Weakness Map"
+  },
+  "diagnosis": {
+    "metaTitle": "Metacognition Diagnosis | AI Interview",
+    "metaDescription": "Identify your weak areas with key questions across 9 categories.",
+    "title": "Metacognition Diagnosis",
+    "description": "Answer key questions across 9 categories to identify your weak areas.",
+    "guideTitle": "Guide",
+    "guide1": "A total of {count} key questions are presented, one per category.",
+    "guide2_know": "Know",
+    "guide2_vague": "Vague",
+    "guide2_unknown": "Don't know",
+    "guide2_text": "Self-assess each question as {know} / {vague} / {unknown}.",
+    "guide3": "Review your weak categories in the results and start learning.",
+    "note": "* This is not a test. It's a metacognition diagnosis where you judge whether you can answer each question.",
+    "startButton": "Start Diagnosis",
+    "questionProgress": "Question {current} / {total}",
+    "selfCheck": "Judge whether you could answer this in an interview.",
+    "answerKnow": "Know",
+    "answerKnowDesc": "I can answer this logically",
+    "answerVague": "Vague",
+    "answerVagueDesc": "I've heard of it but can't explain clearly",
+    "answerUnknown": "Don't know",
+    "answerUnknownDesc": "Never heard of it or can't answer at all",
+    "nextQuestion": "Next Question",
+    "viewResult": "View Results",
+    "skipQuestion": "Skip",
+    "resultTitle": "Diagnosis Results",
+    "resultDescription": "Self-assessment results for {count} questions.",
+    "overallScore": "Overall Understanding",
+    "know": "Know",
+    "vague": "Vague",
+    "unknown": "Unknown",
+    "countUnit": "{count}",
+    "weakCategories": "Weak Categories ({count})",
+    "weakCategoryGuide": "Focus on learning these categories first for better efficiency.",
+    "categoryResults": "Results by Category",
+    "studyLink": "Study",
+    "studyWeakButton": "Study Weak Concepts",
+    "retryDiagnosis": "Retry Diagnosis",
+    "errorTitle": "Failed to load diagnosis data"
+  },
+  "learn": {
+    "completionDone": "Completed",
+    "completionUndo": "Undo Completion",
+    "conceptTitle": "Concept Definition & Core Principles",
+    "keywordsTitle": "Frequently Asked Keywords",
+    "tipTitle": "Interview Tip",
+    "backToList": "{category} List",
+    "goToDashboard": "Dashboard",
+    "noConcepts": "No concepts registered yet.",
+    "backToDashboardArrow": "← Dashboard"
+  },
+  "map": {
+    "metaTitle": "Weakness Map | AI Interview",
+    "metaDescription": "Visualize your understanding across all concepts",
+    "title": "Weakness Map",
+    "progressDescription": "{completed} of {total} completed. Focus on your weak areas.",
+    "noProgressDescription": "Log in and start learning to see your progress reflected here.",
+    "excellent": "Excellent",
+    "normal": "Normal",
+    "poor": "Poor",
+    "notStarted": "Not Started"
+  },
+  "categories": {
+    "html": {
+      "label": "HTML",
+      "description": "Semantic markup, accessibility, web components"
+    },
+    "css": {
+      "label": "CSS",
+      "description": "Layout, responsive, animations, modern CSS"
+    },
+    "javascript": {
+      "label": "JavaScript",
+      "description": "Core JS, async, TypeScript, ES6+"
+    },
+    "react": {
+      "label": "React",
+      "description": "Hooks, state management, render optimization, patterns"
+    },
+    "nextjs": {
+      "label": "Next.js",
+      "description": "App Router, SSR/SSG, caching, middleware"
+    },
+    "infra_security_network": {
+      "label": "Infra/Security/Network",
+      "description": "HTTP, CORS, OAuth, security headers, WebSocket"
+    },
+    "version_control": {
+      "label": "Version Control (Git/CI-CD)",
+      "description": "Branching strategies, CI/CD, Docker, deployment"
+    },
+    "performance_seo": {
+      "label": "Performance/SEO",
+      "description": "Core Web Vitals, bundle optimization, meta tags"
+    },
+    "ai_llm": {
+      "label": "AI/LLM Integration",
+      "description": "Streaming UI, RAG, prompt engineering, AI security"
+    }
+  },
+  "difficulty": {
+    "junior": "Junior",
+    "mid": "Mid",
+    "senior": "Senior"
+  }
+}

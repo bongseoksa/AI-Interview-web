@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,24 +19,24 @@ import { upsertProgress } from "@/app/actions/progress";
 import { CATEGORIES, CATEGORY_MAP } from "@/constants/categories";
 import type { CategoryType } from "@/types/database";
 
-const LEVEL_CONFIG: Record<
+const LEVEL_STYLE: Record<
   AnswerLevel,
-  { label: string; color: string; badgeVariant: string; score: number }
+  { labelKey: string; color: string; badgeVariant: string; score: number }
 > = {
   know: {
-    label: "안다",
+    labelKey: "know",
     color: "text-green-600",
     badgeVariant: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
     score: 100,
   },
   vague: {
-    label: "애매하다",
+    labelKey: "vague",
     color: "text-yellow-600",
     badgeVariant: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
     score: 50,
   },
   unknown: {
-    label: "모른다",
+    labelKey: "unknown",
     color: "text-red-600",
     badgeVariant: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
     score: 0,
@@ -43,6 +44,9 @@ const LEVEL_CONFIG: Record<
 };
 
 export function DiagnosisResult() {
+  const t = useTranslations("diagnosis");
+  const tc = useTranslations("categories");
+  const tCommon = useTranslations("common");
   const answers = useDiagnosisStore((s) => s.answers);
   const questions = useDiagnosisStore((s) => s.questions);
   const reset = useDiagnosisStore((s) => s.reset);
@@ -52,7 +56,7 @@ export function DiagnosisResult() {
   const { user } = useAuth();
   const savedRef = useRef(false);
 
-  // 진단 결과를 user_progress에 저장
+  // Save diagnosis results to user_progress
   useEffect(() => {
     if (!user || savedRef.current || answers.length === 0) return;
     savedRef.current = true;
@@ -60,22 +64,22 @@ export function DiagnosisResult() {
     for (const answer of answers) {
       const q = questions.find((q) => q.id === answer.questionId);
       if (!q) continue;
-      const mastery = LEVEL_CONFIG[answer.level].score;
+      const mastery = LEVEL_STYLE[answer.level].score;
       upsertProgress(q.node_id, mastery);
     }
   }, [user, answers, questions]);
 
   // Overall score
   const totalScore =
-    answers.reduce((sum, a) => sum + LEVEL_CONFIG[a.level].score, 0) /
+    answers.reduce((sum, a) => sum + LEVEL_STYLE[a.level].score, 0) /
     answers.length;
 
   // Sort categories: weak first
   const sortedCategories = CATEGORIES.filter(
     (cat) => categoryResults[cat.key] !== undefined
   ).sort((a, b) => {
-    const scoreA = LEVEL_CONFIG[categoryResults[a.key]].score;
-    const scoreB = LEVEL_CONFIG[categoryResults[b.key]].score;
+    const scoreA = LEVEL_STYLE[categoryResults[a.key]].score;
+    const scoreB = LEVEL_STYLE[categoryResults[b.key]].score;
     return scoreA - scoreB;
   });
 
@@ -90,23 +94,23 @@ export function DiagnosisResult() {
           href="/dashboard"
           className="text-sm text-muted-foreground hover:underline"
         >
-          &larr; 대시보드
+          &larr; {tCommon("backToDashboard")}
         </Link>
       </div>
 
       <div className="space-y-6">
         {/* Header */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">진단 결과</h1>
+          <h1 className="text-3xl font-bold">{t("resultTitle")}</h1>
           <p className="text-muted-foreground">
-            {questions.length}개 질문에 대한 자기 점검 결과입니다.
+            {t("resultDescription", { count: questions.length })}
           </p>
         </div>
 
         {/* Overall Score */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">종합 이해도</CardTitle>
+            <CardTitle className="text-lg">{t("overallScore")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-4">
@@ -115,13 +119,13 @@ export function DiagnosisResult() {
             </div>
             <div className="flex gap-4 text-sm">
               <span className="text-green-600">
-                안다 {knowCount}개
+                {t("know")} {t("countUnit", { count: knowCount })}
               </span>
               <span className="text-yellow-600">
-                애매 {vagueCount}개
+                {t("vague")} {t("countUnit", { count: vagueCount })}
               </span>
               <span className="text-red-600">
-                모름 {unknownCount}개
+                {t("unknown")} {t("countUnit", { count: unknownCount })}
               </span>
             </div>
           </CardContent>
@@ -132,12 +136,12 @@ export function DiagnosisResult() {
           <Card className="border-red-200 bg-red-50/50 dark:border-red-900 dark:bg-red-950/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg text-red-700 dark:text-red-400">
-                취약 카테고리 ({weakCategories.length}개)
+                {t("weakCategories", { count: weakCategories.length })}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="mb-3 text-sm text-muted-foreground">
-                아래 카테고리를 우선적으로 학습하면 효율적입니다.
+                {t("weakCategoryGuide")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {weakCategories.map((cat) => {
@@ -149,7 +153,7 @@ export function DiagnosisResult() {
                         variant="outline"
                         className="cursor-pointer hover:bg-red-100 dark:hover:bg-red-900"
                       >
-                        {meta.icon} {meta.label}
+                        {meta.icon} {tc(`${cat}.label`)}
                       </Badge>
                     </Link>
                   );
@@ -163,10 +167,10 @@ export function DiagnosisResult() {
 
         {/* Category Detail */}
         <div className="space-y-3">
-          <h2 className="text-lg font-semibold">카테고리별 결과</h2>
+          <h2 className="text-lg font-semibold">{t("categoryResults")}</h2>
           {sortedCategories.map((cat) => {
             const level = categoryResults[cat.key];
-            const config = LEVEL_CONFIG[level];
+            const config = LEVEL_STYLE[level];
             const question = questions.find((q) => q.category === cat.key);
 
             return (
@@ -175,7 +179,7 @@ export function DiagnosisResult() {
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{cat.icon}</span>
                     <div>
-                      <div className="font-medium">{cat.label}</div>
+                      <div className="font-medium">{tc(`${cat.key}.label`)}</div>
                       {question && (
                         <p className="text-xs text-muted-foreground line-clamp-1">
                           {question.question}
@@ -185,14 +189,14 @@ export function DiagnosisResult() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className={config.badgeVariant}>
-                      {config.label}
+                      {t(config.labelKey)}
                     </Badge>
                     {level !== "know" && question && (
                       <Link
                         href={`/learn/${cat.key}/${question.node_slug}`}
                         className="text-xs text-primary hover:underline"
                       >
-                        학습하기
+                        {t("studyLink")}
                       </Link>
                     )}
                   </div>
@@ -209,15 +213,15 @@ export function DiagnosisResult() {
           {weakCategories.length > 0 && (
             <Button asChild className="flex-1" size="lg">
               <Link href={`/learn/${weakCategories[0]}`}>
-                취약 개념 학습하기
+                {t("studyWeakButton")}
               </Link>
             </Button>
           )}
           <Button onClick={reset} variant="outline" size="lg" className="flex-1">
-            다시 진단하기
+            {t("retryDiagnosis")}
           </Button>
           <Button asChild variant="ghost" size="lg">
-            <Link href="/dashboard">대시보드</Link>
+            <Link href="/dashboard">{tCommon("backToDashboard")}</Link>
           </Button>
         </div>
       </div>

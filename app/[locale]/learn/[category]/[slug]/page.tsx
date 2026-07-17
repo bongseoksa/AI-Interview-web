@@ -1,5 +1,6 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -7,20 +8,24 @@ import { getAllNodes, getNodeBySlug } from "@/lib/supabase/queries";
 import { getProgressByNodeId } from "@/app/actions/progress";
 import { CATEGORY_MAP, DIFFICULTY_LABELS } from "@/constants/categories";
 import { CompletionButton } from "@/components/learn/completion-button";
+import { routing } from "@/i18n/routing";
 import type { CategoryType } from "@/types/database";
 
 export async function generateStaticParams() {
   const nodes = await getAllNodes();
-  return nodes.map((node) => ({
-    category: node.category,
-    slug: node.slug,
-  }));
+  return routing.locales.flatMap((locale) =>
+    nodes.map((node) => ({
+      locale,
+      category: node.category,
+      slug: node.slug,
+    }))
+  );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string; slug: string }>;
+  params: Promise<{ locale: string; category: string; slug: string }>;
 }) {
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
@@ -38,9 +43,11 @@ export async function generateMetadata({
 export default async function ConceptPage({
   params,
 }: {
-  params: Promise<{ category: string; slug: string }>;
+  params: Promise<{ locale: string; category: string; slug: string }>;
 }) {
-  const { category, slug } = await params;
+  const { locale, category, slug } = await params;
+  setRequestLocale(locale);
+
   const decodedCategory = decodeURIComponent(category);
   const decodedSlug = decodeURIComponent(slug);
   const meta = CATEGORY_MAP[decodedCategory as CategoryType];
@@ -55,6 +62,15 @@ export default async function ConceptPage({
 
   const diff = DIFFICULTY_LABELS[node.difficulty || "junior"];
 
+  const [t, tc, td] = await Promise.all([
+    getTranslations("learn"),
+    getTranslations("categories"),
+    getTranslations("difficulty"),
+  ]);
+
+  const categoryLabel = tc(`${decodedCategory}.label` as Parameters<typeof tc>[0]);
+  const diffLabel = td(node.difficulty || "junior");
+
   // 답변 가이드를 3단 구조로 분리 (개념 정의 / 핵심 원리 / 면접 빈출 키워드)
   const contentBody = node.content_body || "";
 
@@ -66,7 +82,7 @@ export default async function ConceptPage({
           href={`/learn/${decodedCategory}`}
           className="text-sm text-muted-foreground hover:underline"
         >
-          ← {meta.label}
+          &larr; {categoryLabel}
         </Link>
       </div>
 
@@ -74,10 +90,10 @@ export default async function ConceptPage({
       <div className="mb-8 space-y-3">
         <div className="flex items-center gap-2">
           <Badge variant="outline" className={meta.color}>
-            {meta.icon} {meta.label}
+            {meta.icon} {categoryLabel}
           </Badge>
           <Badge variant="outline" className={diff.color}>
-            {diff.label}
+            {diffLabel}
           </Badge>
         </div>
         <h1 className="text-2xl font-bold leading-tight sm:text-3xl">
@@ -90,7 +106,7 @@ export default async function ConceptPage({
         {/* 섹션 1: 개념 정의 & 핵심 원리 */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">개념 정의 & 핵심 원리</CardTitle>
+            <CardTitle className="text-lg">{t("conceptTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="whitespace-pre-wrap leading-relaxed text-foreground/90">
@@ -103,7 +119,7 @@ export default async function ConceptPage({
         {node.key_keywords && node.key_keywords.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">면접 빈출 키워드</CardTitle>
+              <CardTitle className="text-lg">{t("keywordsTitle")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -121,7 +137,7 @@ export default async function ConceptPage({
         {node.default_tip && (
           <Card className="border-primary/20 bg-primary/5">
             <CardHeader>
-              <CardTitle className="text-lg">💡 면접 팁</CardTitle>
+              <CardTitle className="text-lg">💡 {t("tipTitle")}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-foreground/80">{node.default_tip}</p>
@@ -143,13 +159,13 @@ export default async function ConceptPage({
           href={`/learn/${decodedCategory}`}
           className="text-muted-foreground hover:underline"
         >
-          ← {meta.label} 목록
+          &larr; {t("backToList", { category: categoryLabel })}
         </Link>
         <Link
           href="/dashboard"
           className="text-muted-foreground hover:underline"
         >
-          대시보드 →
+          {t("goToDashboard")} &rarr;
         </Link>
       </div>
     </main>

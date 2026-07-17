@@ -1,27 +1,33 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getNodesByCategory } from "@/lib/supabase/queries";
 import { getUserProgress } from "@/app/actions/progress";
 import { CATEGORIES, CATEGORY_MAP, DIFFICULTY_LABELS } from "@/constants/categories";
+import { routing } from "@/i18n/routing";
 import type { CategoryType } from "@/types/database";
 
 export async function generateStaticParams() {
-  return CATEGORIES.map((cat) => ({ category: cat.key }));
+  return routing.locales.flatMap((locale) =>
+    CATEGORIES.map((cat) => ({ locale, category: cat.key }))
+  );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ locale: string; category: string }>;
 }) {
-  const { category } = await params;
+  const { locale, category } = await params;
   const decodedCategory = decodeURIComponent(category);
+  const tc = await getTranslations({ locale, namespace: "categories" });
   const meta = CATEGORY_MAP[decodedCategory as CategoryType];
   if (!meta) return { title: "Not Found" };
+  const label = tc(`${decodedCategory}.label` as Parameters<typeof tc>[0]);
   return {
-    title: `${meta.label} | AI Interview`,
+    title: `${label} | AI Interview`,
     description: meta.description,
   };
 }
@@ -29,20 +35,27 @@ export async function generateMetadata({
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ locale: string; category: string }>;
 }) {
-  const { category } = await params;
+  const { locale, category } = await params;
+  setRequestLocale(locale);
+
   const decodedCategory = decodeURIComponent(category);
   const meta = CATEGORY_MAP[decodedCategory as CategoryType];
   if (!meta) notFound();
 
-  const [nodes, progressList] = await Promise.all([
+  const [nodes, progressList, tc, td, tl] = await Promise.all([
     getNodesByCategory(decodedCategory as CategoryType),
     getUserProgress(),
+    getTranslations("categories"),
+    getTranslations("difficulty"),
+    getTranslations("learn"),
   ]);
   const progressMap = new Map(
     progressList.map((p) => [p.node_id, p.mastery_level])
   );
+
+  const categoryLabel = tc(`${decodedCategory}.label` as Parameters<typeof tc>[0]);
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
@@ -51,12 +64,12 @@ export default async function CategoryPage({
           href="/dashboard"
           className="text-sm text-muted-foreground hover:underline"
         >
-          &larr; 대시보드
+          {tl("backToDashboardArrow")}
         </Link>
         <div className="flex items-center gap-3">
           <span className="text-3xl">{meta.icon}</span>
           <div>
-            <h1 className="text-3xl font-bold">{meta.label}</h1>
+            <h1 className="text-3xl font-bold">{categoryLabel}</h1>
             <p className="text-muted-foreground">{meta.description}</p>
           </div>
         </div>
@@ -65,6 +78,7 @@ export default async function CategoryPage({
       <div className="space-y-3">
         {nodes.map((node) => {
           const diff = DIFFICULTY_LABELS[node.difficulty || "junior"];
+          const diffLabel = td(node.difficulty || "junior");
           const mastery = progressMap.get(node.id);
           const isCompleted = mastery !== undefined && mastery >= 80;
           return (
@@ -80,7 +94,7 @@ export default async function CategoryPage({
                       variant="outline"
                       className={`shrink-0 ${diff.color}`}
                     >
-                      {diff.label}
+                      {diffLabel}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -103,7 +117,7 @@ export default async function CategoryPage({
 
       {nodes.length === 0 && (
         <p className="text-center text-muted-foreground">
-          아직 등록된 개념이 없습니다.
+          {tl("noConcepts")}
         </p>
       )}
     </main>

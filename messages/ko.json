@@ -1,0 +1,157 @@
+{
+  "common": {
+    "siteName": "AI Interview",
+    "siteDescription": "프론트엔드 엔지니어를 위한 AI 기반 모의 인터뷰 연습 서비스",
+    "backToHome": "홈으로",
+    "backToDashboard": "대시보드",
+    "loading": "처리 중...",
+    "saving": "저장 중...",
+    "retry": "다시 시도",
+    "errorLoad": "데이터를 불러올 수 없습니다",
+    "errorNetwork": "네트워크 문제 또는 서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+    "goToDashboard": "대시보드로 이동"
+  },
+  "auth": {
+    "login": "로그인",
+    "signup": "회원가입",
+    "logout": "로그아웃",
+    "email": "이메일",
+    "password": "비밀번호",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "6자 이상",
+    "description": "학습 진행 상황을 저장하려면 {mode}하세요.",
+    "noAccount": "계정이 없으신가요?",
+    "hasAccount": "이미 계정이 있으신가요?",
+    "errorInvalidCredentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
+    "errorEmailNotConfirmed": "이메일 인증이 완료되지 않았습니다. 메일함을 확인해주세요.",
+    "errorAlreadyRegistered": "이미 가입된 이메일입니다.",
+    "successEmailSent": "인증 메일을 발송했습니다. 메일함을 확인해주세요.",
+    "loginAndRecord": "로그인하고 학습 완료 기록하기"
+  },
+  "landing": {
+    "heroTitle": "AI Interview",
+    "heroDescription": "프론트엔드 엔지니어를 위한 AI 기반 기술 학습 및 모의 인터뷰 연습 서비스.\n내가 무엇을 알고 무엇을 모르는지 파악하는 것부터 시작하세요.",
+    "diagnosisButton": "취약 영역 진단하기",
+    "startLearning": "학습 시작하기",
+    "featureMetacognition": "메타인지 학습",
+    "featureMetacognitionDesc": "아는 것과 모르는 것을 구분하고, 취약 영역을 시각적으로 파악하세요.",
+    "featureCurriculum": "체계적 커리큘럼",
+    "featureCurriculumDesc": "9개 카테고리, 151개 핵심 개념을 단계별로 학습하세요.",
+    "featureFrontend": "프론트엔드 특화",
+    "featureFrontendDesc": "HTML, CSS, JS, React, Next.js 등 프론트엔드 핵심 주제만 다룹니다.",
+    "footer": "AI Interview — 프론트엔드 면접 준비의 새로운 방법"
+  },
+  "dashboard": {
+    "title": "커리큘럼 대시보드",
+    "metaTitle": "커리큘럼 대시보드 | AI Interview",
+    "metaDescription": "9개 카테고리별 프론트엔드 핵심 개념 학습 현황",
+    "totalProgress": "총 {total}개 핵심 개념 중 {completed}개 완료",
+    "diagnosisButton": "메타인지 진단",
+    "mapButton": "취약 맵"
+  },
+  "diagnosis": {
+    "metaTitle": "메타인지 진단 | AI Interview",
+    "metaDescription": "9개 카테고리 핵심 질문으로 나의 취약 영역을 파악합니다.",
+    "title": "메타인지 진단",
+    "description": "9개 카테고리의 핵심 질문에 답변하여 나의 취약 영역을 파악하세요.",
+    "guideTitle": "진단 안내",
+    "guide1": "총 {count}개 핵심 질문이 카테고리별로 하나씩 출제됩니다.",
+    "guide2_know": "안다",
+    "guide2_vague": "애매하다",
+    "guide2_unknown": "모른다",
+    "guide2_text": "각 질문에 대해 {know} / {vague} / {unknown}로 자기 점검합니다.",
+    "guide3": "결과 리포트에서 취약 카테고리를 확인하고 학습을 시작하세요.",
+    "note": "* 정답을 작성하는 시험이 아닙니다. \"이 질문에 답할 수 있는가?\"를 스스로 판단하는 메타인지 진단입니다.",
+    "startButton": "진단 시작하기",
+    "questionProgress": "질문 {current} / {total}",
+    "selfCheck": "이 질문에 면접에서 답변할 수 있는지 스스로 판단해주세요.",
+    "answerKnow": "안다",
+    "answerKnowDesc": "이 질문에 논리적으로 답변할 수 있다",
+    "answerVague": "애매하다",
+    "answerVagueDesc": "들어봤지만 명확하게 설명하기 어렵다",
+    "answerUnknown": "모른다",
+    "answerUnknownDesc": "처음 듣거나 전혀 답할 수 없다",
+    "nextQuestion": "다음 질문",
+    "viewResult": "결과 확인",
+    "skipQuestion": "건너뛰기",
+    "resultTitle": "진단 결과",
+    "resultDescription": "{count}개 질문에 대한 자기 점검 결과입니다.",
+    "overallScore": "종합 이해도",
+    "know": "안다",
+    "vague": "애매",
+    "unknown": "모름",
+    "countUnit": "{count}개",
+    "weakCategories": "취약 카테고리 ({count}개)",
+    "weakCategoryGuide": "아래 카테고리를 우선적으로 학습하면 효율적입니다.",
+    "categoryResults": "카테고리별 결과",
+    "studyLink": "학습하기",
+    "studyWeakButton": "취약 개념 학습하기",
+    "retryDiagnosis": "다시 진단하기",
+    "errorTitle": "진단 데이터를 불러올 수 없습니다"
+  },
+  "learn": {
+    "completionDone": "학습 완료",
+    "completionUndo": "학습 완료 취소",
+    "conceptTitle": "개념 정의 & 핵심 원리",
+    "keywordsTitle": "면접 빈출 키워드",
+    "tipTitle": "면접 팁",
+    "backToList": "{category} 목록",
+    "goToDashboard": "대시보드",
+    "noConcepts": "아직 등록된 개념이 없습니다.",
+    "backToDashboardArrow": "← 대시보드"
+  },
+  "map": {
+    "metaTitle": "취약 맵 | AI Interview",
+    "metaDescription": "전체 개념 이해도 현황 시각화",
+    "title": "취약 맵",
+    "progressDescription": "전체 {total}개 중 {completed}개 완료. 취약 영역을 집중 학습하세요.",
+    "noProgressDescription": "로그인 후 학습을 진행하면 이해도 상태가 반영됩니다.",
+    "excellent": "우수",
+    "normal": "보통",
+    "poor": "미흡",
+    "notStarted": "미학습"
+  },
+  "categories": {
+    "html": {
+      "label": "HTML",
+      "description": "시맨틱 마크업, 접근성, 웹 컴포넌트"
+    },
+    "css": {
+      "label": "CSS",
+      "description": "레이아웃, 반응형, 애니메이션, 모던 CSS"
+    },
+    "javascript": {
+      "label": "JavaScript",
+      "description": "코어 JS, 비동기, 타입스크립트, ES6+"
+    },
+    "react": {
+      "label": "React",
+      "description": "훅, 상태 관리, 렌더링 최적화, 패턴"
+    },
+    "nextjs": {
+      "label": "Next.js",
+      "description": "App Router, SSR/SSG, 캐싱, 미들웨어"
+    },
+    "infra_security_network": {
+      "label": "인프라/보안/네트워크",
+      "description": "HTTP, CORS, OAuth, 보안 헤더, WebSocket"
+    },
+    "version_control": {
+      "label": "형상관리 (Git/CI-CD)",
+      "description": "브랜치 전략, CI/CD, Docker, 배포"
+    },
+    "performance_seo": {
+      "label": "성능/SEO",
+      "description": "Core Web Vitals, 번들 최적화, 메타 태그"
+    },
+    "ai_llm": {
+      "label": "AI/LLM 통합",
+      "description": "스트리밍 UI, RAG, 프롬프트 엔지니어링, AI 보안"
+    }
+  },
+  "difficulty": {
+    "junior": "주니어",
+    "mid": "미드",
+    "senior": "시니어"
+  }
+}

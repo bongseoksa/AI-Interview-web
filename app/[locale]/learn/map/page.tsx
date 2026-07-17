@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -6,11 +6,20 @@ import { getCategoryCounts, getAllNodes } from "@/lib/supabase/queries";
 import { getUserProgress } from "@/app/actions/progress";
 import { CATEGORIES, DIFFICULTY_LABELS } from "@/constants/categories";
 import { UserNav } from "@/components/common/user-nav";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export const metadata = {
-  title: "취약 맵 | AI Interview",
-  description: "전체 개념 이해도 현황 시각화",
+type Props = {
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "map" });
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
 function getMasteryColor(pct: number): string {
   if (pct >= 80) return "bg-green-500";
@@ -19,19 +28,25 @@ function getMasteryColor(pct: number): string {
   return "bg-red-500";
 }
 
-function getMasteryLabel(pct: number): string {
-  if (pct >= 80) return "우수";
-  if (pct >= 50) return "보통";
-  if (pct > 0) return "미흡";
-  return "미학습";
+function getMasteryLabel(pct: number, t: (key: string) => string): string {
+  if (pct >= 80) return t("excellent");
+  if (pct >= 50) return t("normal");
+  if (pct > 0) return t("poor");
+  return t("notStarted");
 }
 
-export default async function MapPage() {
-  const [counts, nodes, progressList] = await Promise.all([
+export default async function MapPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const [counts, nodes, progressList, t, tc, td] = await Promise.all([
     getCategoryCounts(),
     getAllNodes(),
     getUserProgress(),
+    getTranslations("map"),
+    getTranslations("categories"),
+    getTranslations("difficulty"),
   ]);
+  const tCommon = await getTranslations("common");
   const totalNodes = Object.values(counts).reduce((a, b) => a + b, 0);
 
   // 노드별 진행도 맵
@@ -80,15 +95,15 @@ export default async function MapPage() {
             href="/dashboard"
             className="text-sm text-muted-foreground hover:underline"
           >
-            &larr; 대시보드
+            &larr; {tCommon("backToDashboard")}
           </Link>
           <UserNav />
         </div>
-        <h1 className="text-3xl font-bold">취약 맵</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
         <p className="text-muted-foreground">
           {hasProgress
-            ? `전체 ${totalNodes}개 중 ${totalCompleted}개 완료. 취약 영역을 집중 학습하세요.`
-            : "로그인 후 학습을 진행하면 이해도 상태가 반영됩니다."}
+            ? t("progressDescription", { total: totalNodes, completed: totalCompleted })
+            : t("noProgressDescription")}
         </p>
       </div>
 
@@ -104,7 +119,7 @@ export default async function MapPage() {
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2 text-base">
                       <span>{cat.icon}</span>
-                      {cat.label}
+                      {tc(`${cat.key}.label` as any)}
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       {hasProgress && (
@@ -112,7 +127,7 @@ export default async function MapPage() {
                           variant="outline"
                           className={`text-xs text-white ${getMasteryColor(cat.avgMastery)}`}
                         >
-                          {getMasteryLabel(cat.avgMastery)}
+                          {getMasteryLabel(cat.avgMastery, t)}
                         </Badge>
                       )}
                       <span className="text-sm text-muted-foreground">
@@ -135,7 +150,7 @@ export default async function MapPage() {
                           variant="outline"
                           className={`text-xs ${d.color}`}
                         >
-                          {d.label} {count}
+                          {td(level as any)} {count}
                         </Badge>
                       );
                     })}

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,18 +7,32 @@ import { getCategoryCounts, getAllNodes } from "@/lib/supabase/queries";
 import { getUserProgress } from "@/app/actions/progress";
 import { CATEGORIES } from "@/constants/categories";
 import { UserNav } from "@/components/common/user-nav";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export const metadata = {
-  title: "커리큘럼 대시보드 | AI Interview",
-  description: "9개 카테고리별 프론트엔드 핵심 개념 학습 현황",
+type Props = {
+  params: Promise<{ locale: string }>;
 };
 
-export default async function DashboardPage() {
-  const [counts, nodes, progressList] = await Promise.all([
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "dashboard" });
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
+
+export default async function DashboardPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const [counts, nodes, progressList, t, tc] = await Promise.all([
     getCategoryCounts(),
     getAllNodes(),
     getUserProgress(),
+    getTranslations("dashboard"),
+    getTranslations("categories"),
   ]);
+  const tCommon = await getTranslations("common");
   const totalNodes = Object.values(counts).reduce((a, b) => a + b, 0);
 
   // 카테고리별 완료 수 집계
@@ -45,13 +59,13 @@ export default async function DashboardPage() {
             href="/"
             className="text-sm text-muted-foreground hover:underline"
           >
-            &larr; 홈으로
+            &larr; {tCommon("backToHome")}
           </Link>
           <UserNav />
         </div>
-        <h1 className="text-3xl font-bold">커리큘럼 대시보드</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
         <p className="text-muted-foreground">
-          총 {totalNodes}개 핵심 개념 중 {totalCompleted}개 완료
+          {t("totalProgress", { total: totalNodes, completed: totalCompleted })}
         </p>
         {totalNodes > 0 && (
           <Progress
@@ -61,10 +75,10 @@ export default async function DashboardPage() {
         )}
         <div className="flex gap-3 pt-2">
           <Button asChild>
-            <Link href="/diagnosis">메타인지 진단</Link>
+            <Link href="/diagnosis">{t("diagnosisButton")}</Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/learn/map">취약 맵</Link>
+            <Link href="/learn/map">{t("mapButton")}</Link>
           </Button>
         </div>
       </div>
@@ -84,11 +98,11 @@ export default async function DashboardPage() {
                       {completed}/{count}
                     </Badge>
                   </div>
-                  <CardTitle className="text-lg">{cat.label}</CardTitle>
+                  <CardTitle className="text-lg">{tc(`${cat.key}.label` as any)}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-muted-foreground">
-                    {cat.description}
+                    {tc(`${cat.key}.description` as any)}
                   </p>
                   <Progress value={pct} className="h-2" />
                 </CardContent>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/providers/auth-provider";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { upsertProgress } from "@/app/actions/progress";
+import { useTranslations } from "next-intl";
 
 interface CompletionButtonProps {
   nodeId: string;
@@ -18,6 +19,9 @@ export function CompletionButton({
   const { user } = useAuth();
   const [mastery, setMastery] = useState(initialMastery);
   const [isPending, startTransition] = useTransition();
+  const ta = useTranslations("auth");
+  const tc = useTranslations("common");
+  const tl = useTranslations("learn");
 
   const isCompleted = mastery !== null && mastery >= 80;
 
@@ -37,7 +41,7 @@ export function CompletionButton({
     return (
       <AuthModal>
         <Button variant="outline" className="w-full">
-          로그인하고 학습 완료 기록하기
+          {ta("loginAndRecord")}
         </Button>
       </AuthModal>
     );
@@ -51,10 +55,10 @@ export function CompletionButton({
       className="w-full"
     >
       {isPending
-        ? "저장 중..."
+        ? tc("saving")
         : isCompleted
-          ? "학습 완료 취소"
-          : "학습 완료"}
+          ? tl("completionUndo")
+          : tl("completionDone")}
     </Button>
   );
 }

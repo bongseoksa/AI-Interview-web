@@ -3,9 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/providers/auth-provider";
 import { AuthModal } from "@/components/auth/auth-modal";
+import { useTranslations } from "next-intl";
 
 export function UserNav() {
   const { user, loading, signOut } = useAuth();
+  const t = useTranslations("auth");
 
   if (loading) {
     return <div className="h-9 w-20 animate-pulse rounded-md bg-muted" />;
@@ -15,7 +17,7 @@ export function UserNav() {
     return (
       <AuthModal>
         <Button variant="outline" size="sm">
-          로그인
+          {t("login")}
         </Button>
       </AuthModal>
     );
@@ -27,7 +29,7 @@ export function UserNav() {
         {user.email?.split("@")[0]}
       </span>
       <Button variant="ghost" size="sm" onClick={signOut}>
-        로그아웃
+        {t("logout")}
       </Button>
     </div>
   );
