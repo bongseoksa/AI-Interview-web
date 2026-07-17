@@ -22,10 +22,22 @@ interface DiagnosisState {
   answer: (level: AnswerLevel) => void;
   skip: () => void;
   reset: () => void;
+}
 
-  // Computed
-  getWeakCategories: () => string[];
-  getCategoryResults: () => Record<string, AnswerLevel>;
+// Computed helpers (store 외부에서 사용 — selector 무한루프 방지)
+export function getCategoryResults(answers: DiagnosisAnswer[]): Record<string, AnswerLevel> {
+  const results: Record<string, AnswerLevel> = {};
+  for (const a of answers) {
+    results[a.category] = a.level;
+  }
+  return results;
+}
+
+export function getWeakCategories(answers: DiagnosisAnswer[]): string[] {
+  const results = getCategoryResults(answers);
+  return Object.entries(results)
+    .filter(([, level]) => level === "unknown" || level === "vague")
+    .map(([cat]) => cat);
 }
 
 export const useDiagnosisStore = create<DiagnosisState>((set, get) => ({
@@ -60,20 +72,4 @@ export const useDiagnosisStore = create<DiagnosisState>((set, get) => ({
 
   reset: () =>
     set({ phase: "intro", currentIndex: 0, answers: [] }),
-
-  getWeakCategories: () => {
-    const results = get().getCategoryResults();
-    return Object.entries(results)
-      .filter(([, level]) => level === "unknown" || level === "vague")
-      .map(([cat]) => cat);
-  },
-
-  getCategoryResults: () => {
-    const { answers } = get();
-    const results: Record<string, AnswerLevel> = {};
-    for (const a of answers) {
-      results[a.category] = a.level;
-    }
-    return results;
-  },
 }));

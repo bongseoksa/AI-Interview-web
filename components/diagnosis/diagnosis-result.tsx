@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { useDiagnosisStore, type AnswerLevel } from "@/store/diagnosis";
+import {
+  useDiagnosisStore,
+  getCategoryResults,
+  getWeakCategories,
+  type AnswerLevel,
+} from "@/store/diagnosis";
 import { useAuth } from "@/providers/auth-provider";
 import { upsertProgress } from "@/app/actions/progress";
 import { CATEGORIES, CATEGORY_MAP } from "@/constants/categories";
@@ -40,9 +45,10 @@ const LEVEL_CONFIG: Record<
 export function DiagnosisResult() {
   const answers = useDiagnosisStore((s) => s.answers);
   const questions = useDiagnosisStore((s) => s.questions);
-  const categoryResults = useDiagnosisStore((s) => s.getCategoryResults());
-  const weakCategories = useDiagnosisStore((s) => s.getWeakCategories());
   const reset = useDiagnosisStore((s) => s.reset);
+
+  const categoryResults = useMemo(() => getCategoryResults(answers), [answers]);
+  const weakCategories = useMemo(() => getWeakCategories(answers), [answers]);
   const { user } = useAuth();
   const savedRef = useRef(false);
 

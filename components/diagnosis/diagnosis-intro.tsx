@@ -24,7 +24,7 @@ export function DiagnosisIntro() {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">메타인지 진단</h1>
           <p className="text-muted-foreground">
-            8개 카테고리의 핵심 질문에 답변하여 나의 취약 영역을 파악하세요.
+            9개 카테고리의 핵심 질문에 답변하여 나의 취약 영역을 파악하세요.
           </p>
         </div>
 
