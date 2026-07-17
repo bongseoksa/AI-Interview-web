@@ -31,8 +31,11 @@ npm install -g pnpm
 
 ```bash
 cd AI-Interview-web
-pnpm install
+pnpm install          # 의존성 설치 + husky pre-commit 훅 자동 활성화 (prepare 스크립트)
 ```
+
+> `pnpm install` 시 `prepare` 스크립트가 자동 실행되어 husky pre-commit 훅이 활성화됩니다.
+> 커밋 시 민감 파일(.env, 인증서 등) 차단 + secretlint 시크릿 스캔이 자동 수행됩니다.
 
 ## 4. 실행
 

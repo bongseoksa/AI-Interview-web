@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# ===========================================
+# Layer 2: Forbidden file pattern check
+# ===========================================
+FORBIDDEN_PATTERNS=(
+  "\.env$"
+  "\.env\.local$"
+  "\.env\.development$"
+  "\.env\.production$"
+  "\.env\.keys$"
+  "\.pem$"
+  "\.p12$"
+  "\.key$"
+  "\.secret$"
+  "credentials\.json$"
+  "serviceAccountKey\.json$"
+  "supabase/\.temp/"
+  "\.sentryclirc$"
+)
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACR)
+
+BLOCKED_FILES=""
+for file in $STAGED_FILES; do
+  for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
+    if echo "$file" | grep -qE "$pattern"; then
+      BLOCKED_FILES="$BLOCKED_FILES\n  - $file (matched: $pattern)"
+    fi
+  done
+done
+
+if [ -n "$BLOCKED_FILES" ]; then
+  echo ""
+  echo "[pre-commit] Blocked: sensitive files detected in staging"
+  echo "$BLOCKED_FILES"
+  echo ""
+  echo "If intentional, use: git commit --no-verify"
+  exit 1
+fi
+
+# ===========================================
+# Layer 3: Secret content scanning (staged files only)
+# ===========================================
+if command -v pnpm &> /dev/null && [ -n "$STAGED_FILES" ]; then
+  pnpm exec secretlint $STAGED_FILES
+  if [ $? -ne 0 ]; then
+    echo ""
+    echo "[pre-commit] Blocked: secrets detected in file contents"
+    echo "If intentional, use: git commit --no-verify"
+    exit 1
+  fi
+fi
