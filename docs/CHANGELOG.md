@@ -4,6 +4,32 @@
 
 ---
 
+## [2026-07-18]
+
+### 노션 5-섹션 재구성
+- **변경 유형**: 수정
+- **변경 내용**: 노션 전체 구조를 5개 섹션(기획 & 제품, 설계 & 아키텍처, 레포지토리, 프로젝트 진행, 회의록)으로 재구성
+  - 사업계획서, Handoff 페이지 → 아카이브 (내용은 새 페이지로 이관)
+  - 신규 페이지 4개: 기술 스택 & AI 모델 전략, AI-Interview-web, AI-Interview-server, AI-Interview-orchestrator
+  - Phase별 마일스톤 & 체크리스트: 진행가이드 + Handoff 통합
+- **변경 사유**: 직군별 접근성 향상, 정보 중복 제거, SSOT 원칙 적용
+- **관련 에이전트**: 서기관리 에이전트, 프로덕트 매니저
+- **영향 범위**: Notion 전체 구조, docs/sync/document-registry.md, docs/README.md
+
+### 3개 레포 문서 재정리
+- **변경 유형**: 수정
+- **변경 내용**:
+  - **용어 통일**: 모든 문서에서 "Step" → "Phase" 일괄 변경
+  - **역할 분리**: CLAUDE.md(AI용), ONBOARDING.md(신규자용), README.md(GitHub용) 중복 제거
+  - **SSOT 적용**: 모델 비교표/선정 근거를 orchestrator ONBOARDING.md로 일원화, web/server는 참조만
+  - **orchestrator**: CLAUDE.md에서 모델 상세를 ONBOARDING.md로 이동, README에서 9→11 Crews 수정
+  - **web**: docs/README.md Notion 맵 최신화, CHANGELOG Step→Phase, document-registry 신구조 반영
+  - **server**: qa-engineer.md 보완, Phase 용어 통일
+  - **docs/design-crew-logger.md**: "구현 대기" → "구현 완료" 상태 갱신
+- **변경 사유**: 문서 간 정보 중복, 역할 경계 모호, Step/Phase 용어 혼재 해소
+- **관련 에이전트**: 서기관리 에이전트, 외부인사 (82/100 검증)
+- **영향 범위**: 3개 레포 전체 (CLAUDE.md, ONBOARDING.md, README.md, docs/)
+
 ## [2026-07-17]
 
 ### 문서 관리 체계 수립
@@ -36,7 +62,7 @@
     - "핵심 기능"에 Phase 0 개념 학습(메타인지) 추가 (기획서와 정합성 확보)
     - "문서 구조" 테이블을 실제 Notion 하위 페이지와 일치시킴 (디자인/아키텍처/마일스톤/회의록 -> 기획서/사업계획서/진행가이드)
     - "에이전트 조직" 섹션 신규 추가 (10개 에이전트 목록)
-    - "현재 진행 단계" 섹션 신규 추가 (Step 1 Discovery 진행 중)
+    - "현재 진행 단계" 섹션 신규 추가 (Phase 1 Discovery 진행 중)
     - "레포지토리" 테이블에 상태 컬럼 추가 (초기화 완료/미착수)
     - "기술 스택" 버전을 package.json 실제 설치 버전으로 갱신 (Next.js 16.2.10, TS 5.9.3 등)
     - "개발 환경 설정"에 전체 명령어 및 프로젝트 구조(디렉토리 맵) 추가
@@ -62,22 +88,22 @@
 - **관련 에이전트**: 서기관리 에이전트
 - **영향 범위**: 사업계획서 (섹션 0 신규), 메인 페이지 (프로젝트 개요 테이블)
 
-### Step 0 신설 (서기 에이전트 구축)
+### Phase 0 신설 (서기 에이전트 구축)
 - **변경 유형**: 수정
-- **변경 내용**: 진행 가이드에 Step 0 추가 — 문서 관리 인프라를 모든 기획 단계보다 선행
-  - 기존 Step 1~8 앞에 Step 0 삽입
-  - Step 0 산출물: docs/ 구조, 문서 레지스트리, 산출물 템플릿, CHANGELOG, 서기 에이전트 프롬프트
+- **변경 내용**: 진행 가이드에 Phase 0 추가 — 문서 관리 인프라를 모든 기획 단계보다 선행
+  - 기존 Phase 1~8 앞에 Phase 0 삽입
+  - Phase 0 산출물: docs/ 구조, 문서 레지스트리, 산출물 템플릿, CHANGELOG, 서기 에이전트 프롬프트
   - 서기 에이전트는 orchestrator 전체가 아닌 독립 도구로 먼저 동작
-- **변경 사유**: Step 1부터 산출물이 쏟아지므로, 문서 관리 체계가 선행되어야 함
+- **변경 사유**: Phase 1부터 산출물이 쏟아지므로, 문서 관리 체계가 선행되어야 함
 - **관련 에이전트**: 서기관리 에이전트
-- **영향 범위**: 진행가이드 (Step 0 추가), 메인 페이지 (현재 단계 갱신), 사업계획서 (의사결정 기록)
+- **영향 범위**: 진행가이드 (Phase 0 추가), 메인 페이지 (현재 단계 갱신), 사업계획서 (의사결정 기록)
 
 ### 산출물 템플릿 생성
 - **변경 유형**: 생성
 - **변경 내용**: docs/templates/ 에 4개 템플릿 생성
-  - `competitor-analysis.md` — Step 1 경쟁사 분석 보고서 템플릿
-  - `prd.md` — Step 2 PRD (제품 요구사항 문서) 템플릿
-  - `user-story.md` — Step 4 유저 스토리 템플릿
+  - `competitor-analysis.md` — Phase 1 경쟁사 분석 보고서 템플릿
+  - `prd.md` — Phase 2 PRD (제품 요구사항 문서) 템플릿
+  - `user-story.md` — Phase 4 유저 스토리 템플릿
   - `adr.md` — 아키텍처 의사결정 기록(ADR) 템플릿
 - **변경 사유**: 각 Step의 산출물이 일관된 구조로 작성될 수 있도록 선행 준비
 - **관련 에이전트**: 서기관리 에이전트
@@ -93,7 +119,7 @@
   - `orchestrator/scripts/sync-agents.sh` — 배포 현황 확인 스크립트
   - `orchestrator/CLAUDE.md` — 오케스트레이터 프로젝트 설명
   - `server/CLAUDE.md` — 서버 프로젝트 설명
-- **변경 사유**: Step 1부터 에이전트 페르소나 기반 작업 가능하도록 선행 구축
+- **변경 사유**: Phase 1부터 에이전트 페르소나 기반 작업 가능하도록 선행 구축
 - **비용 제약**: orchestrator에 Claude API 토큰 사용 불가, 향후 자율 실행 시 Ollama + CrewAI
 - **관련 에이전트**: 서기관리 에이전트
 - **영향 범위**: 3개 레포 전체, Notion 사업계획서/메인 페이지
@@ -148,7 +174,7 @@
   - `orchestrator/src/config/llm.py` — 모델 비교표 및 선정 근거 포함
   - `orchestrator/src/config/agents.yaml` — 10개 에이전트 CrewAI 형식 정의
   - `orchestrator/src/config/tasks.yaml` — Step별 태스크 정의
-  - `orchestrator/src/crews/` — ResearchCrew (Step 1), PlanningCrew (Step 2-4)
+  - `orchestrator/src/crews/` — ResearchCrew (Phase 1), PlanningCrew (Phase 2-4)
   - `orchestrator/main.py` — 실행 엔트리포인트
   - `orchestrator/CLAUDE.md` — 모델 선정 근거 상세 기록
 - **변경 사유**: orchestrator에 AI 모델이 정의되지 않아 자율 에이전트 실행 불가능했음

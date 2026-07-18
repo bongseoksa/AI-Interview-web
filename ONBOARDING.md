@@ -97,8 +97,8 @@ docs/               # 문서 관리 (서기관리 에이전트)
 
 ## 9. AI 모델 전략
 
-- **Orchestrator 2-Tier (Ollama 로컬)**: 자료 수집·개발은 Gemma 4 26B (고성능 고정), 유저 대면 콘텐츠는 Gemma 4 12B (경량) — orchestrator 레포 참조
-- **서비스 LLM**: TBD (Step 6 아키텍처 설계 시 결정). 유저 대면이므로 경량 모델 예정
+- AI 모델 2-Tier 전략 상세: orchestrator 레포 참조
+- **서비스 LLM**: TBD (Phase 6 아키텍처 설계 시 결정)
 - LLM 호출은 Server Components / Route Handlers에서만 수행 (API 키 보호)
 
 ## 10. 컨벤션

@@ -47,8 +47,8 @@ All imports use `@/*` alias mapped to the project root:
 
 ### AI 모델 전략
 
-- **Orchestrator 2-Tier**: 자료 수집·개발은 Gemma 4 26B (고성능), 유저 대면 콘텐츠는 Gemma 4 12B (경량) — orchestrator에서 Ollama 로컬 실행
-- **서비스 LLM**: TBD (Step 6 아키텍처 설계 시 결정). 유저 대면이므로 경량 모델 예정
+- AI 모델 2-Tier 전략 상세: `AI-Interview-orchestrator/CLAUDE.md` 참조
+- **서비스 LLM**: TBD (Phase 6 아키텍처 설계 시 결정)
 - LLM 호출은 반드시 Server Components / Route Handlers를 통해 수행 (API 키 클라이언트 노출 방지)
 
 ### i18n (다국어)
