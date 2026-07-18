@@ -28,7 +28,7 @@ export async function upsertProgress(nodeId: string, masteryLevel: number) {
   }
 
   revalidatePath("/dashboard");
-  revalidatePath("/learn", "layout");
+  revalidatePath(`/learn`, "page");
   return { success: true };
 }
 
@@ -44,7 +44,7 @@ export async function getUserProgress() {
 
   const { data, error } = await supabase
     .from("user_progress")
-    .select("*")
+    .select("node_id, mastery_level, last_accessed")
     .eq("user_id", user.id);
 
   if (error) {
@@ -66,7 +66,7 @@ export async function getProgressByNodeId(nodeId: string) {
 
   const { data } = await supabase
     .from("user_progress")
-    .select("*")
+    .select("node_id, mastery_level, last_accessed")
     .eq("user_id", user.id)
     .eq("node_id", nodeId)
     .single();
